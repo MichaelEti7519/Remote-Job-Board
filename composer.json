@@ -16,6 +16,13 @@
             "App\\": "app/"
         }
     },
+    "config": {
+        "policy": {
+            "advisories": {
+                "block": false
+            }
+        }
+    },
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump"
