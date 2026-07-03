@@ -35,25 +35,9 @@ class FreelancerController extends Controller
     }
 
     // ... rest of methods unchanged
-}
- public function show(string $freelancerId): JsonResponse
+
+
     
-    {
-        try {
-            $freelancer = Freelancer::findOrFail($freelancerId);
-            $freelancer->load('projects');
-
-            return response()->json(new FreelancerResource($freelancer));
-        } catch (\Throwable) {
-            $freelancer = $this->findFallbackFreelancer($freelancerId);
-
-            if (! $freelancer) {
-                return response()->json(['message' => 'Freelancer not found'], 404);
-            }
-
-            return response()->json($freelancer);
-        }
-    }
 
     private function fallbackFreelancers(): array
     {
