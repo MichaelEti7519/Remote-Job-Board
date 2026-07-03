@@ -2,7 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Middleware\ValidateSignature;
+use Illuminate\Foundation\Http\Middleware\ValidateSignature;  // ✅ fixed
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,8 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-  $middleware->alias([
-           'signed' => \Illuminate\Foundation\Http\Middleware\ValidateSignature::class,
+        $middleware->alias([
+            'signed' => ValidateSignature::class,  
         ]);
     })
     ->withExceptions(function (Illuminate\Foundation\Configuration\Exceptions $exceptions) {
