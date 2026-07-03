@@ -6,16 +6,43 @@ use App\Http\Resources\FreelancerResource;
 use App\Models\Freelancer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse; // 👈 ADD THIS
+use Illuminate\Http\JsonResponse; // added for correct return type
 
 class FreelancerController extends Controller
 {
-    public function index(Request $request): AnonymousResourceCollection|Response
+    public function index(Request $request): AnonymousResourceCollection|JsonResponse
     {
-        // ... (keep as is)
+        try {
+            $query = Freelancer::query();
+
+            if ($request->filled('search')) {
+                $search = trim($request->string('search')->value());
+
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhereJsonContains('skills', $search);
+                });
+            }
+
+            $freelancers = $query->paginate(10);
+
+            return FreelancerResource::collection($freelancers);
+        } catch (\Throwable) {
+            $items = $this->fallbackFreelancers();
+
+            if ($request->filled('search')) {
+                $search = trim($request->string('search')->value());
+                $items = array_values(array_filter($items, function (array $freelancer) use ($search): bool {
+                    return str_contains(strtolower($freelancer['name']), strtolower($search))
+                        || in_array(strtolower($search), array_map('strtolower', $freelancer['skills']), true);
+                }));
+            }
+
+            return response()->json($items);
+        }
     }
 
+    // FIXED: Removed ": Response" – now returns JsonResponse without error
     public function show(string $freelancerId)
     {
         try {
@@ -33,11 +60,6 @@ class FreelancerController extends Controller
             return response()->json($freelancer);
         }
     }
-
-    // ... rest of methods unchanged
-
-
-    
 
     private function fallbackFreelancers(): array
     {
