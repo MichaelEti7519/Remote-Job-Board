@@ -6,10 +6,11 @@ use App\Http\Resources\FreelancerResource;
 use App\Models\Freelancer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\JsonResponse; // added for correct return type
+use Illuminate\Http\JsonResponse;
 
 class FreelancerController extends Controller
 {
+    // Index method returns either collection or JSON fallback
     public function index(Request $request): AnonymousResourceCollection|JsonResponse
     {
         try {
@@ -42,7 +43,7 @@ class FreelancerController extends Controller
         }
     }
 
-    // FIXED: Removed ": Response" – now returns JsonResponse without error
+    // ★★★ FIXED: NO return type – can return JsonResponse ★★★
     public function show(string $freelancerId)
     {
         try {
