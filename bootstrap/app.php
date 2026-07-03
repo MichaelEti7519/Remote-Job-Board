@@ -12,7 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->append(ValidateSignature::class);
+  $middleware->alias([
+           'signed' => \Illuminate\Foundation\Http\Middleware\ValidateSignature::class,
+        ]);
     })
     ->withExceptions(function (Illuminate\Foundation\Configuration\Exceptions $exceptions) {
         //
