@@ -2,7 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Foundation\Http\Middleware\ValidateSignature;  // ✅ fixed
+use Illuminate\Foundation\Http\Middleware\ValidateSignature;  
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
