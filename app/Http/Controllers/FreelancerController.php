@@ -43,7 +43,7 @@ class FreelancerController extends Controller
         }
     }
 
-    public function show(string $freelancerId): JsonResponse
+    public function show(string $freelancerId)
     {
         try {
             $freelancer = Freelancer::findOrFail($freelancerId);
