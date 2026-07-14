@@ -49,7 +49,7 @@ class FreelancerController extends Controller
             $freelancer = Freelancer::findOrFail($freelancerId);
             $freelancer->load('projects');
 
-            return response()->json(new FreelancerResource($freelancer));
+            return (new FreelancerResource($freelancer))->response();
         } catch (\Throwable) {
             $freelancer = $this->findFallbackFreelancer($freelancerId);
 
